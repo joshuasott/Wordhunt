@@ -48,12 +48,11 @@ def main():
         words = []
         valid_word_set = set(line.strip() for line in dictionary)
         for start in graph:
-            for end in graph:
-                words.append(checks('A',graph, coro,valid_word_set))
+            words.append(checks(start,graph, coro,valid_word_set))
 
 
 
-def checks(start, graph, corospondancy, words, valid_words=None, path=None):
+def checks(start, graph, corospondancy, words:set, valid_words=None, path=None):
     #Initialization
     if valid_words is None:
         valid_words = []
