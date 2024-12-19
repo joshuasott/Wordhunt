@@ -52,19 +52,25 @@ def main():
 
 
 
-def checks(start, graph, corospondancy, words:set, valid_words=None, path=None):
+def checks(start, graph, corospondancy, words:set, valid_words=None, path=None,memo=None):
     #Initialization
     if valid_words is None:
         valid_words = []
     if path is None:
         path = []
+    if memo is None:
+        memo = {}
     if start in path:
         return
 
     path = path + [start]
-    #check if the word so far is the start of any valid word
     substatuted_path = path_to_string(corospondancy, path)
+    #check if the word so far is the start of any valid word
+    if substatuted_path in memo:
+        return memo[substatuted_path]
+
     if not any(word.startswith(substatuted_path) for word in words):
+        memo[substatuted_path] = False
         return
 
     #if the path is a valid word
@@ -73,8 +79,9 @@ def checks(start, graph, corospondancy, words:set, valid_words=None, path=None):
 
     #Depth First Search
     for node in graph[start]:
-        checks(node, graph, corospondancy, words, valid_words, path)
+        checks(node, graph, corospondancy, words, valid_words, path, memo)
 
+    memo[substatuted_path] = valid_words
     return valid_words
 
 
